@@ -2,26 +2,89 @@
 
 ## Overview of the Analysis
 
-In this section, describe the analysis you completed for the machine learning models used in this Challenge. This might include:
+Module 12 Report Template
 
-* Explain the purpose of the analysis.
-* Explain what financial information the data was on, and what you needed to predict.
-* Provide basic information about the variables you were trying to predict (e.g., `value_counts`).
-* Describe the stages of the machine learning process you went through as part of this analysis.
-* Briefly touch on any methods you used (e.g., `LogisticRegression`, or any other algorithms).
+Overview of the Analysis
 
-## Results
+The purpose of this analysis was to develop a machine learning model to predict loan risk based on financial data. The goal was to determine whether a loan is classified as high-risk (1) or healthy (0) to assist lenders in making informed decisions and minimizing financial losses.
 
-Using bulleted lists, describe the accuracy scores and the precision and recall scores of all machine learning models.
+The dataset contained financial indicators such as:
 
-* Machine Learning Model 1:
-    * Description of Model 1 Accuracy, Precision, and Recall scores.
+Loan size
 
-## Summary
+Interest rate
 
-Summarize the results of the machine learning models, and include a recommendation on the model to use, if any. For example:
+Borrower’s income
 
-* Which one seems to perform best? How do you know it performs best?
-* Does performance depend on the problem we are trying to solve? (For example, is it more important to predict the `1`'s, or predict the `0`'s? )
+Debt-to-income ratio
+
+Number of accounts
+
+Derogatory marks (negative financial events)
+
+Total debt
+
+Loan status (Target Variable: 0 = Healthy Loan, 1 = High-Risk Loan)
+
+A key observation in the dataset was the imbalance in loan status values:
+
+Healthy Loans (0): 75,036
+
+High-Risk Loans (1): 2,500
+This imbalance presented a challenge, as the model could be biased toward predicting loans as healthy due to their higher frequency in the dataset. To address this, we applied class balancing techniques, including adjusting class weights in the logistic regression model.
+
+The machine learning process included the following steps:
+
+Data Preparation – The dataset was loaded, and the target variable (loan_status) was separated from the features (X).
+
+Train-Test Split – The data was divided into 80% training and 20% testing to evaluate the model’s performance on unseen data.
+
+Model Selection – Logistic Regression was chosen due to its effectiveness in binary classification problems. Alternative models, such as Random Forest and Gradient Boosting, were also considered but were not tested in this analysis.
+
+Class Imbalance Handling – Class weights were adjusted in the logistic regression model to improve recall for high-risk loans.
+
+Model Evaluation – The model’s accuracy, precision, and recall scores were analyzed to assess its effectiveness in identifying high-risk loans.
+
+Results
+
+Machine Learning Model 1: Logistic Regression
+
+Accuracy: 99% (The model correctly classified 99 out of 100 loans.)
+
+Confusion Matrix:
+
+[[14918   83]
+ [    9  498]]
+
+Precision & Recall Scores:
+
+Healthy Loans (0):
+
+Precision: 1.00 (The model never falsely classified a loan as risky when it was actually safe.)
+
+Recall: 0.99 (99% of all truly safe loans were correctly identified.)
+
+High-Risk Loans (1):
+
+Precision: 0.86 (When the model predicted a loan was risky, it was correct 86% of the time.)
+
+Recall: 0.98 (98% of truly risky loans were successfully flagged.)
+
+Summary
+
+Which one seems to perform best? How do you know it performs best?
+
+The Logistic Regression model was the best-performing model, achieving 99% accuracy and a 98% recall for high-risk loans. This means it correctly identified nearly all risky borrowers, which is important for lenders to avoid financial losses. Additionally, the model used class weighting to balance the dataset, which helped improve its ability to detect high-risk loans.
+
+Does performance depend on the problem we are trying to solve?
+
+Yes, performance depends on what we are trying to achieve. In loan risk prediction, identifying high-risk loans (1’s) is more important than identifying safe ones. Lenders need to catch risky borrowers to avoid financial losses. However, this comes with a trade-off—while recall is high (98%), precision is lower (86%), meaning some safe borrowers might be mistakenly labeled as risky.
 
 If you do not recommend any of the models, please justify your reasoning.
+
+I recommend using Logistic Regression with class weight adjustments because it balances accuracy and recall, making it a reliable tool for lenders. However, to make the model even better, we could test other models like Random Forest or Gradient Boosting, which might improve precision while still maintaining a high recall. These models could help reduce false positives, ensuring that good borrowers are not mistakenly flagged as high-risk while still catching actual risky loans.
+
+REFERENCES:
+https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
+https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html
+CHATGPT
